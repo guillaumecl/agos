@@ -1,16 +1,19 @@
 AS=nasm
-CC=cc
+LD=ld
 LDFLAGS=-nostdlib -nodefaultlibs -m32
 EXEC=agos
 
-agos:agos.o
+agos:agos.o linux.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-%.o: %.s
+boot.bin:boot.asm
+	$(AS) -f bin -o $@ $<
+
+%.o: %.asm
 	$(AS) -f elf -o $@  $<
 
 .PHONY: clean all
 
 clean:
 	rm -rf *.o
-	rm -rf $(EXEC)
+	rm -rf $(EXEC) boot.bin

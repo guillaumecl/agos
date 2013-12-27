@@ -1,0 +1,3 @@
+global agos
+agos:
+		ret
