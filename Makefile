@@ -4,15 +4,15 @@ STRIP=strip -R .note -R .comment
 
 all: agos boot.bin agos.img
 
-agos:agos.o linux.o
-	${LD} -o $@ $^
+agos:linux.o agos.o
+	${LD} -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lSDL -o $@ $^
 	${STRIP} $@
 
 boot.bin:boot.asm
 	$(NASM) -f bin -o $@ $<
 
-agos.bin:agos.asm
-	$(NASM) -f bin -o $@ agos.asm
+agos.bin:agos_bin.asm
+	$(NASM) -f bin -o $@ agos_bin.asm
 
 boot.o:boot.asm
 	$(NASM) -f elf -DELF -o $@ $<
@@ -27,10 +27,10 @@ rand.bin:
 	dd if=/dev/urandom of=rand.bin bs=1024 count=1440
 
 qemu: agos.img
-	qemu-system-i386 -fda agos.img -m 32
+	qemu-system-$(shell uname -m) -fda agos.img -m 32
 
 debug: agos.img
-	qemu-system-i386 -s -S -fda agos.img -m 32
+	qemu-system-$(shell uname -m) -s -S -fda agos.img -m 32
 
 %.o: %.asm linux.inc
 	${NASM} -f elf -DELF -o $@ $<
