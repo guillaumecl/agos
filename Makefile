@@ -11,7 +11,7 @@ agos:linux.o agos.o
 boot.bin:boot.asm
 	$(NASM) -f bin -o $@ $<
 
-agos.bin:agos_bin.asm
+agos.bin:agos_bin.asm agos.asm
 	$(NASM) -f bin -o $@ agos_bin.asm
 
 boot.o:boot.asm
@@ -32,7 +32,7 @@ qemu: agos.img
 debug: agos.img
 	qemu-system-$(shell uname -m) -s -S -fda agos.img -m 32
 
-%.o: %.asm linux.inc
+%.o: %.asm linux.inc sdl.inc
 	${NASM} -f elf -DELF -o $@ $<
 
 .PHONY: clean all
