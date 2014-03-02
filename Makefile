@@ -27,10 +27,10 @@ rand.bin:
 	dd if=/dev/urandom of=rand.bin bs=1024 count=1440
 
 qemu: agos.img
-	qemu-system-$(shell uname -m) -fda agos.img -m 32
+	qemu-system-i386 -fda agos.img -m 32
 
 debug: agos.img
-	qemu-system-$(shell uname -m) -s -S -fda agos.img -m 32
+	qemu-system-i386 -s -S -fda agos.img -m 32
 
 %.o: %.asm linux.inc sdl.inc
 	${NASM} -f elf -DELF -o $@ $<
