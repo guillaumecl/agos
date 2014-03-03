@@ -64,16 +64,15 @@ _start:
 		SDL_set_colors eax, palette, 0, 256
 
 		mov eax, [surface]
-		lea eax, [eax+20]
-		mov edi, [eax]
+		mov edi, [eax+20]
 
 		mov ebp, flip
 		call agos
 
 		mov ecx, 0
-loopp:
+.loop:
 		dec ecx
-		jnz loopp
+		jnz .loop
 
 		call SDL_Quit
 

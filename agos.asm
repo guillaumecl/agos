@@ -94,22 +94,21 @@ put_bitmap:
 put_bitmap_transp:
 		mov ebp, ecx
 
-.line_loop:
-		mov al, byte [esi]
+.next_pixel:
+		mov al, byte [ds:esi]
 		cmp al, 0xff
-		je skip
-		movsb
-		jmp next
-skip:
+		je .skip_pixel
+		mov [es:edi], al
+.skip_pixel:
 		inc esi
 		inc edi
-next:	dec ecx
-		jnz put_bitmap_transp.line_loop
+.next:	dec ecx
+		jnz .next_pixel
 		mov ecx, ebp
 
 		sub edi, ecx
 		add edi, 320
 		dec edx
-		jnz put_bitmap_transp.line_loop
+		jnz .next_pixel
 
 		ret
