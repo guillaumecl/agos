@@ -50,6 +50,11 @@ fill_screen:
 
 		call [flip_func]
 
+again:
+		call scroll_up
+		call [flip_func]
+		jmp again
+
 		ret
 
 ; compute a buffer position
@@ -110,5 +115,27 @@ put_bitmap_transp:
 		add edi, 320
 		dec edx
 		jnz .next_pixel
+
+		ret
+
+scroll_down:
+		mov edi, [framebuffer]
+		add edi, 320*200-4
+		mov esi, edi
+		sub esi, 320
+
+		std
+		mov ecx, (320*199)/4
+		rep movsd
+		cld
+
+		ret
+
+scroll_up:
+		mov edi, [framebuffer]
+		lea esi, [edi+320]
+
+		mov ecx, (320*199)/4
+		rep movsd
 
 		ret
