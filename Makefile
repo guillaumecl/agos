@@ -11,7 +11,7 @@ agos:linux.o agos.o
 boot.bin:boot.asm
 	$(NASM) -f bin -o $@ $<
 
-agos.bin:agos_bin.asm agos.asm
+agos.bin:agos_bin.asm agos.asm interrupts.asm
 	$(NASM) -f bin -o $@ agos_bin.asm
 
 boot.o:boot.asm
