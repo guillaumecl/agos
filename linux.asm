@@ -59,6 +59,9 @@ _start:
 
 		SDL_set_video_mode 320, 200, 8, SDL_FULLSCREEN
 
+		test eax, eax
+		jz end
+
 		mov [surface], eax
 
 		SDL_set_colors eax, palette, 0, 256
