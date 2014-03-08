@@ -85,16 +85,18 @@ idtr:	dw 16*8-1
 		dw ((%1-$$+0x10200) >> 16)
 %endmacro
 
+%macro idt_entry 2
+%rep %1
+		idt_entry %2
+%endrep
+%endmacro
+
 idt:
-		%rep 8
-		idt_entry fault_handler
-		%endrep
+		idt_entry 8, fault_handler
 
 		; IRQ0-7 entries
 		idt_entry time_handler
 		idt_entry key_handler
-		%rep 6
-		idt_entry master_irq_handler
-		%endrep
+		idt_entry 6, master_irq_handler
 
 %include "agos.asm"
